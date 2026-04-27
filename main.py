@@ -143,10 +143,7 @@ df_product_sold = pd.read_sql("""
 # As a follow-up to the above question, the product team also wants to know how many different customers ordered each product to get an idea of market reach. Return the product name, code, and the total number of customers who have ordered each product, aliased as 'numpurchasers'. Sort the results by the highest  number of purchasers.
 
 # Hint: You might need to join more than 2 tables. Use DISTINCT to return unique/different values.
-pd.read_sql("""
-            SELECT * 
-            FROM products;
-            """, conn)
+
 # CodeGrade step8
 # Replace None with your code
 df_total_customers = pd.read_sql("""
@@ -157,7 +154,7 @@ df_total_customers = pd.read_sql("""
                 USING(productCode)
             JOIN orders AS o
                 USING(orderNumber)
-            GROUP BY p.productName, p.productCode
+            GROUP BY  p.productCode
             ORDER BY numpurchasers DESC;
             """, conn)
 ### Step 9
@@ -166,8 +163,7 @@ df_total_customers = pd.read_sql("""
 # CodeGrade step9
 # Replace None with your code
 df_customers =pd.read_sql("""
-            SELECT o.officeCode, o.city,
-                   COUNT(c.customerNumber) AS n_customers
+            SELECT COUNT(c.customerNumber) AS n_customers,  o.officeCode, o.city
             FROM offices AS o
             JOIN employees AS e
                 USING(officeCode)
