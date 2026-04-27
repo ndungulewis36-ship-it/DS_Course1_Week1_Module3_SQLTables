@@ -55,8 +55,8 @@ df_boston =pd.read_sql ("""
 # Replace None with your code
 df_zero_emp = pd.read_sql("""
                           SELECT o.city o.officeCode
-                          FROM employees e
-                            LEFT JOIN offices o
+                          FROM offices o
+                            LEFT JOIN employees e
                           USING(officeCode)
                           WHERE employeeNumber IS NULL;
                           
