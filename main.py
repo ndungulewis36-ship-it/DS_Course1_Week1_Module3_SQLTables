@@ -41,44 +41,27 @@ pd.read_sql("""SELECT * FROM sqlite_master""", conn)
 # CodeGrade step1
 # Replace None with your code
 df_boston =pd.read_sql ("""
-             SELECT firstname,lastname
-             FROM employees;
+             SELECT e.firstname,e.lastname,e.jobtitle
+             FROM employees e
+             JOIN Office o
+             USING(officecode)
+             WHERE o.city = 'Boston';
              """, conn)
-pd.read_sql("""
-             SELECT firstname,lastname
-             FROM employees;
-             """, conn)
-pd.read_sql("""
-            SELECT * 
-            FROM employees;
-            
-            """, conn)
-pd.read_sql("""
-            SELECT * 
-            FROM offices;
-            
-            """, conn)
+
 ### Step 2
 
 # Recent downsizing and employee attrition have caused some mixups in office tracking and the company is worried they are supporting a 'ghost' location. Are there any offices that have zero employees?
 # CodeGrade step2
 # Replace None with your code
 df_zero_emp = pd.read_sql("""
-                          SELECT employeeNumber AS Employee, firstname,lastname
-                          FROM employees
-                          JOIN offices
+                          SELECT o.city o.officeCode
+                          FROM employees e
+                            LEFT JOIN offices o
                           USING(officeCode)
                           WHERE employeeNumber IS NULL;
                           
                           """, conn)
-pd.read_sql("""
-                          SELECT employeeNumber AS Employee, firstname,lastname
-                          FROM employees
-                          JOIN offices
-                          USING(officeCode)
-                          WHERE employeeNumber IS NULL;
-                          
-                          """, conn)
+
 ## Part 2: Type of Join
 ### Step 3
 
@@ -88,27 +71,10 @@ pd.read_sql("""
 df_employee = pd.read_sql("""
                SELECT e.firstname,e.lastname,o.city,o.state
                FROM employees AS e
-               JOIN offices AS o
+               LEFT JOIN offices AS o
                USING(officeCode)
                ORDER BY e.firstname,e.lastname;
                """, conn)
-pd.read_sql("""
-               SELECT e.firstname,e.lastname,o.city,o.state
-               FROM employees AS e
-               JOIN offices AS o
-               USING(officeCode)
-               ORDER BY e.firstname,e.lastname;
-               """, conn)
-pd.read_sql("""
-            SELECT  * 
-            FROM customers;
-            
-            """, conn)
-pd.read_sql("""
-            SELECT  * 
-            FROM orders;
-            
-            """, conn)
 ### Step 4
 # The customer management and sales rep team know that they have several 'customers' in the system that have not placed any orders. They want to reach out to these customers with updated product catalogs to try and get them to place initial orders. Return all of the customer's contact information (first name, last name, and phone number) as well as their sales rep's employee number for any customer that has not placed an order. Sort the results alphabetically based on the contact's last name
 
@@ -116,28 +82,14 @@ pd.read_sql("""
 # CodeGrade step4
 # Replace None with your code
 df_contacts = pd.read_sql("""
-              SELECT c.contactfirstname,c.contactlastname,c.phone,c.salesRepEmployeeNumber
+              SELECT c.contactFirstName,c.contactLastName,c.phone,c.salesRepEmployeeNumber
                FROM customers AS c
                LEFT JOIN orders AS o 
                USING(CustomerNumber)
                WHERE OrderNumber IS NULL 
                ORDER BY c.contactlastName;
                """, conn)
-pd.read_sql("""
-              SELECT c.contactfirstname,c.contactlastname,c.phone,c.salesRepEmployeeNumber
-               FROM customers AS c
-               
-               LEFT JOIN orders AS o 
-               USING(CustomerNumber)
-               WHERE OrderNumber IS NULL 
-               ORDER BY c.contactlastName;
-               """, conn)
-## Part 3: Built-in Function
-pd.read_sql("""
-            SELECT *
-            FROM payments;
-            """, conn
-            )
+
 ### Step 5
 
 # The accounting team is auditing their figures and wants to make sure all customer payments are in alignment, they have asked you to produce a report of all the customer contacts (first and last names) along with details for each of the customers' payment amounts and date of payment. They have asked that these results be sorted in descending order by the payment amount.
@@ -153,13 +105,7 @@ df_payment = pd.read_sql("""
                          ORDER BY
                          CAST(amount AS REAL)  DESC;
                          """, conn)
-pd.read_sql("""
-                         SELECT c.contactfirstName,c.contactLastName,p.amount,p.paymentDate
-                         FROM customers AS c
-                         JOIN payments AS p
-                         USING(customerNumber)
-                         ORDER BY amount DESC;
-                         """, conn)
+
 ## Part 4: Joining and Grouping
 ### Step 6
 
@@ -175,16 +121,6 @@ df_credit = pd.read_sql("""
             HAVING AVG(CAST(c.creditLimit AS REAL)) > 90000
             ORDER BY num_customers DESC
             LIMIT 4;
-            """, conn)
-pd.read_sql("""
-            SELECT e.employeeNumber, e.firstName, e.lastName, COUNT(c.customerNumber) AS num_customers
-            FROM employees e
-            JOIN customers c
-                ON e.employeeNumber = c.salesRepEmployeeNumber
-            GROUP BY e.employeeNumber
-            HAVING AVG(CAST(c.creditLimit AS REAL)) > 90000
-            ORDER BY num_customers DESC
-            
             """, conn)
 ### Step 7
 
