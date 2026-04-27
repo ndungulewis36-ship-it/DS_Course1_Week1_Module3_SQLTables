@@ -54,7 +54,7 @@ df_boston =pd.read_sql ("""
 # CodeGrade step2
 # Replace None with your code
 df_zero_emp = pd.read_sql("""
-                          SELECT o.city o.officeCode
+                          SELECT o.city, o.officeCode
                           FROM offices o
                             LEFT JOIN employees e
                           USING(officeCode)
