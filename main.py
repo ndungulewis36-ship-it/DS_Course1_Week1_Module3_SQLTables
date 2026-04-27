@@ -43,7 +43,7 @@ pd.read_sql("""SELECT * FROM sqlite_master""", conn)
 df_boston =pd.read_sql ("""
              SELECT e.firstname,e.lastname,e.jobtitle
              FROM employees e
-             JOIN Office o
+             JOIN Offices o
              USING(officecode)
              WHERE o.city = 'Boston';
              """, conn)
