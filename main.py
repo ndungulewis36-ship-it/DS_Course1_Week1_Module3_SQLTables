@@ -16,7 +16,7 @@
 
 # The database will be the customer relationship management (CRM) database, which has the following ERD.
 
-![Database-Schema.png](ERD.png)
+#![Database-Schema.png](ERD.png)
 
 ### Connect to the database
 
