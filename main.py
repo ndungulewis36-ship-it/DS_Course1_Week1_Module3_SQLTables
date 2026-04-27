@@ -169,7 +169,7 @@ df_customers =pd.read_sql("""
                 USING(officeCode)
             JOIN customers  AS c
                 ON e.employeeNumber = c.salesRepEmployeeNumber
-            GROUP BY o.officeCode, o.city
+            GROUP BY o.officeCode
             ORDER BY n_customers DESC;
             """, conn)
 ## Part 6: Subquery
